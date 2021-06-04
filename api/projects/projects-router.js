@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
     .catch(next)
 });
 
-router.get('/:id', checkProjectsId, (req, res, next) => {
+router.get('/:id', checkProjectsId, (req, res) => {
   res.json(req.newBody)
 });
 
