@@ -1,5 +1,19 @@
 const { get } = require('./actions-model');
 
+function checkBody(req, res, next) {
+  if (!Object.keys(req.body).length) {
+    res.status(400).json({ message: 'valid project or action required'});
+  } else if (!req.body.project_id) {
+    res.status(400).json({ message: 'Project ID is required'});
+  } else if (!req.body.description) {
+    res.status(400).json({ message: 'description is required'});
+  } else if (!req.body.notes) {
+    res.status(400).json({ message: 'notes required'})
+  } else {
+    next();
+  }
+}
+
 function checkActionsId(req, res, next) {
   get(req.params.id)
     .then(action => {
@@ -15,20 +29,6 @@ function checkActionsId(req, res, next) {
     .catch(error => {
       next(error)
     })
-}
-
-function checkBody(res, req, next) {
-  if (!req.body) {
-    res.status(400).json({ message: 'Valid action required'});
-  } else if (!req.body.project_id) {
-    res.status(400).json({ message: 'ID is required'})
-  } else if (!req.body.description) {
-    res.status(400).json({ message: 'Description is required'});
-  } else if (!req.body.notes) {
-    res.status(400).json({ message: 'Notes are required' })
-  } else {
-    next();
-  }
 }
 
 module.exports = {
